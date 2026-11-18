@@ -1,0 +1,14 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+logs/
+*.log
+finance_sample.db
+data/raw/*.csv
+!data/sample/*.csv
+.DS_Store

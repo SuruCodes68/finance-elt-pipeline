@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: dim_ticker
+    description: Dimension table — one row per ticker.
+    columns:
+      - name: ticker
+        tests: [unique, not_null]
+      - name: first_price_date
+        tests: [not_null]
+      - name: last_price_date
+        tests: [not_null]
+
+  - name: fct_daily_prices
+    description: Fact table — daily prices and returns per ticker.
+    columns:
+      - name: ticker
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_ticker')
+              field: ticker
+      - name: date
+        tests: [not_null]
+      - name: close
+        tests:
+          - not_null
+          - accepted_range:
+              min_value: 0
+              inclusive: false
+      - name: daily_return
+        tests:
+          - accepted_range:
+              min_value: -0.5
+              max_value: 0.5
+              inclusive: true
+
+  - name: fct_portfolio_risk
+    description: Fact table — risk metrics and inverse-volatility weights per ticker.
+    columns:
+      - name: ticker
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('dim_ticker')
+              field: ticker
+      - name: volatility
+        tests:
+          - not_null
+          - accepted_range:
+              min_value: 0
+              inclusive: true
+      - name: risk_weight
+        tests:
+          - not_null
+          - accepted_range:
+              min_value: 0
+              max_value: 1
+              inclusive: true

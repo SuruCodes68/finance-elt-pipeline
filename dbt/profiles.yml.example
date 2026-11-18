@@ -1,0 +1,14 @@
+# Copy to ~/.dbt/profiles.yml (never commit a real profiles.yml).
+# Or set DBT_PROFILES_DIR=dbt and copy this file to dbt/profiles.yml locally.
+finance_elt:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: finance
+      password: finance
+      port: 5432
+      dbname: finance
+      schema: marts
+      threads: 4
